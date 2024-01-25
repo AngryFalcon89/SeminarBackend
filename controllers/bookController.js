@@ -43,40 +43,46 @@ module.exports.createBook = async (req, res) => {
 
 module.exports.getAllBooks = async (req, res) => {
   try {
-    // const searchQuery = req.query.search_query;
-
-    // if (searchQuery) {
-    //   const books = await BookModel.find({
-    //     $or: [
-    //       { Title: searchQuery },
-    //       { Author: searchQuery },
-    //       { Publisher: searchQuery },
-    //     ],
-    //   });
-
-    //   return res.status(200).json({
-    //     status: 'success',
-    //     message: 'Books according to search query fetched',
-    //     books,
-    //   });
-    // }
-
     const searchQuery = req.query.search_query;
-    const queryObject = { $or: [] };
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const totalBooks = await BookModel.countDocuments();
+    const totalPages = Math.ceil(totalBooks / limit);
 
     if (searchQuery) {
-      queryObject.$or.push({ Author: { $regex: searchQuery, $options: 'i' } });
-      queryObject.$or.push({
-        Publisher: { $regex: searchQuery, $options: 'i' },
+      const books = await BookModel.find({
+        $or: [
+          { Title: { $regex: searchQuery, $options: 'i' } },
+          { Author: { $regex: searchQuery, $options: 'i' } },
+          { Publisher: { $regex: searchQuery, $options: 'i' } },
+        ],
+      })
+        .skip(skip)
+        .limit(limit)
+        .sort({ ID: 1 });
+
+      return res.status(200).json({
+        status: 'success',
+        message: 'Books according to search query fetched',
+        currentPage: page,
+        totalPages,
+        books,
       });
-      queryObject.$or.push({ Title: { $regex: searchQuery, $options: 'i' } });
     }
 
-    const books = await BookModel.find(queryObject);
+    const books = await BookModel.find()
+      .skip(skip)
+      .limit(limit)
+      .sort({ ID: 1 });
     return res.status(200).json({
       status: 'success',
       message: 'Books fetched successfully',
       books,
+      currentPage: page,
+      totalPages,
     });
   } catch (error) {
     console.log(error);
@@ -191,11 +197,23 @@ module.exports.returnBook = async (req, res) => {
 
 module.exports.getIssuedBooks = async (req, res) => {
   try {
-    const issuedBooks = await BookModel.find({ Book_Status: false });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const totalBooks = await BookModel.countDocuments();
+    const totalPages = Math.ceil(totalBooks / limit);
+
+    const issuedBooks = await BookModel.find({ Book_Status: false })
+      .skip(skip)
+      .limit(limit)
+      .sort({ 'IssuedTo.issuedAt': -1 });
     return res.status(200).json({
       status: 'success',
       message: 'Issued Books Fetched Successfully',
       issuedBooks,
+      currentPage: page,
+      totalPages,
     });
   } catch (error) {
     console.log(error);
