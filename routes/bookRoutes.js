@@ -4,6 +4,9 @@ const {
   getAllBooks,
   deleteBook,
   updateBook,
+  issueBook,
+  returnBook,
+  getIssuedBooks,
 } = require('../controllers/bookController');
 const { authToken } = require('../middleware/jwtMiddleware');
 
@@ -17,4 +20,9 @@ router.delete('/:bookID', authToken, deleteBook);
 
 router.patch('/:bookID', authToken, updateBook);
 
+router.post('/:bookID/issue', authToken, issueBook);
+
+router.post('/:bookID/return', authToken, returnBook);
+
+router.get('/issued-books', authToken, getIssuedBooks);
 module.exports = router;

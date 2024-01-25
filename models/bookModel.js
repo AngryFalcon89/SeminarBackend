@@ -1,5 +1,16 @@
 const { default: mongoose } = require('mongoose');
 
+const issueSchema = new mongoose.Schema(
+  {
+    name: String,
+    email: String,
+    issuedAt: Date,
+    returnDate: Date,
+    remarks: String,
+  },
+  { timestamps: true }
+);
+
 const bookSchema = new mongoose.Schema(
   {
     ID: Number,
@@ -20,6 +31,7 @@ const bookSchema = new mongoose.Schema(
     Author1: String,
     Author2: String,
     Author3: String,
+    IssuedTo: issueSchema,
   },
   { timestamps: true }
 );
