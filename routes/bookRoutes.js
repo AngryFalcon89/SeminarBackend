@@ -5,15 +5,16 @@ const {
   deleteBook,
   updateBook,
 } = require('../controllers/bookController');
+const { authToken } = require('../middleware/jwtMiddleware');
 
 const router = express.Router();
 
-router.post('/', createBook);
+router.post('/', authToken, createBook);
 
 router.get('/', getAllBooks);
 
-router.delete('/:bookID', deleteBook);
+router.delete('/:bookID', authToken, deleteBook);
 
-router.patch('/:bookID', updateBook);
+router.patch('/:bookID', authToken, updateBook);
 
 module.exports = router;
