@@ -9,11 +9,9 @@ const OTPModel = require('../models/otpModel');
 
 module.exports.generateOTPForEmail = async (req, res) => {
   try {
-    let { name, password, username, email } = req.body;
+    const { name, password, username, email } = req.body;
 
     // NAME VALIDATION STARTS
-    name = name ? name.trim() : '';
-
     if (!('name' in req.body) || !name) {
       return res
         .status(400)
@@ -28,8 +26,6 @@ module.exports.generateOTPForEmail = async (req, res) => {
     // NAME VALIDATION ENDS
 
     // PASSWORD VAVLIDATION STARTS
-    password = password ? password.trim() : '';
-
     if (!('password' in req.body) || !password) {
       return res
         .status(400)
@@ -44,8 +40,6 @@ module.exports.generateOTPForEmail = async (req, res) => {
     // PASSWORD VAVLIDATION ENDS
 
     // USERNAME VAVLIDATION STARTS
-    username = username ? username.trim() : '';
-
     if (!('username' in req.body) || !username) {
       return res
         .status(400)
@@ -67,8 +61,6 @@ module.exports.generateOTPForEmail = async (req, res) => {
     // USERNAME VAVLIDATION ENDS
 
     // EMAIl VAVLIDATION STARTS
-    email = email ? email.trim() : '';
-
     if (!('email' in req.body) || !email) {
       return res
         .status(400)
@@ -135,11 +127,9 @@ module.exports.generateOTPForEmail = async (req, res) => {
 
 module.exports.verifyOTPForEmail = async (req, res) => {
   try {
-    let { email, otp } = req.body;
+    const { email, otp } = req.body;
 
     // EMAIl VAVLIDATION STARTS
-    email = email ? email.trim() : '';
-
     if (!('email' in req.body) || !email) {
       return res
         .status(400)
@@ -160,8 +150,6 @@ module.exports.verifyOTPForEmail = async (req, res) => {
     // EMAIl VAVLIDATION ENDS
 
     // OTP VAVLIDATION STARTS
-    otp = otp ? otp.trim() : '';
-
     if (!('otp' in req.body) || !otp) {
       return res
         .status(400)
@@ -201,11 +189,9 @@ module.exports.verifyOTPForEmail = async (req, res) => {
 
 module.exports.registerUser = async (req, res) => {
   try {
-    let { name, email, password, username } = req.body;
+    const { name, email, password, username } = req.body;
 
     // NAME VALIDATION STARTS
-    name = name ? name.trim() : '';
-
     if (!('name' in req.body) || !name) {
       return res
         .status(400)
@@ -220,8 +206,6 @@ module.exports.registerUser = async (req, res) => {
     // NAME VALIDATION ENDS
 
     // PASSWORD VAVLIDATION STARTS
-    password = password ? password.trim() : '';
-
     if (!('password' in req.body) || !password) {
       return res
         .status(400)
@@ -236,8 +220,6 @@ module.exports.registerUser = async (req, res) => {
     // PASSWORD VAVLIDATION ENDS
 
     // USERNAME VAVLIDATION STARTS
-    username = username ? username.trim() : '';
-
     if (!('username' in req.body) || !username) {
       return res
         .status(400)
@@ -259,8 +241,6 @@ module.exports.registerUser = async (req, res) => {
     // USERNAME VAVLIDATION ENDS
 
     // EMAIl VAVLIDATION STARTS
-    email = email ? email.trim() : '';
-
     if (!('email' in req.body) || !email) {
       return res
         .status(400)
@@ -309,11 +289,9 @@ module.exports.registerUser = async (req, res) => {
 
 module.exports.login = async (req, res) => {
   try {
-    let { emailOrUsername, password } = req.body;
+    const { emailOrUsername, password } = req.body;
 
     // emailOrUsername VALIDATION STARTS
-
-    emailOrUsername = emailOrUsername ? emailOrUsername.trim() : '';
 
     if (!('emailOrUsername' in req.body) || !emailOrUsername) {
       return res
@@ -324,8 +302,6 @@ module.exports.login = async (req, res) => {
     // emailOrUsername VALIDATION ENDS
 
     // password VALIDATION STARTS
-    password = password ? password.trim() : '';
-
     if (!('password' in req.body) || !password) {
       return res
         .status(400)
@@ -359,6 +335,7 @@ module.exports.login = async (req, res) => {
         .json({ status: 'fail', message: 'Invalid credentials' });
     }
 
+    // eslint-disable-next-line no-underscore-dangle
     const authToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
 
     return res
@@ -372,11 +349,9 @@ module.exports.login = async (req, res) => {
 
 module.exports.generateOTPForExistingEmail = async (req, res) => {
   try {
-    let { email } = req.body;
+    const { email } = req.body;
 
     // EMAIl VAVLIDATION STARTS
-    email = email ? email.trim() : '';
-
     if (!('email' in req.body) || !email) {
       return res
         .status(400)
@@ -443,11 +418,9 @@ module.exports.generateOTPForExistingEmail = async (req, res) => {
 
 module.exports.verifyOTPForExistingEmail = async (req, res) => {
   try {
-    let { email, otp } = req.body;
+    const { email, otp } = req.body;
 
     // EMAIl VAVLIDATION STARTS
-    email = email ? email.trim() : '';
-
     if (!('email' in req.body) || !email) {
       return res
         .status(400)
@@ -468,8 +441,6 @@ module.exports.verifyOTPForExistingEmail = async (req, res) => {
     // EMAIl VAVLIDATION ENDS
 
     // OTP VAVLIDATION STARTS
-    otp = otp ? otp.trim() : '';
-
     if (!('otp' in req.body) || !otp) {
       return res
         .status(400)
@@ -509,11 +480,9 @@ module.exports.verifyOTPForExistingEmail = async (req, res) => {
 
 module.exports.changePasswordForExistingEmail = async (req, res) => {
   try {
-    let { email, newPassword } = req.body;
+    const { email, newPassword } = req.body;
 
     // EMAIl VAVLIDATION STARTS
-    email = email ? email.trim() : '';
-
     if (!('email' in req.body) || !email) {
       return res
         .status(400)
@@ -541,8 +510,6 @@ module.exports.changePasswordForExistingEmail = async (req, res) => {
     }
 
     // PASSWORD VAVLIDATION STARTS
-    newPassword = newPassword ? newPassword.trim() : '';
-
     if (!('newPassword' in req.body) || !newPassword) {
       return res
         .status(400)
